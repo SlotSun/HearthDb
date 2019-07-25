@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using HearthDb.CardDefs;
 using HearthDb.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using static HearthDb.Enums.GameTag;
 
 #endregion
@@ -17,6 +19,7 @@ namespace HearthDb
 			Entity = entity;
 		}
 
+        [JsonIgnore]
 		public Entity Entity { get; }
 
 		public string Id => Entity.CardId;
@@ -29,15 +32,20 @@ namespace HearthDb
 
 		public string FlavorText => GetLocFlavorText(DefaultLanguage);
 
-		public CardClass Class => (CardClass)Entity.GetTag(CLASS);
+        [JsonConverter(typeof(StringEnumConverter))]
+        public CardClass Class => (CardClass)Entity.GetTag(CLASS);
 
-		public Rarity Rarity => (Rarity)Entity.GetTag(RARITY);
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Rarity Rarity => (Rarity)Entity.GetTag(RARITY);
 
-		public CardType Type => (CardType)Entity.GetTag(CARDTYPE);
+        [JsonConverter(typeof(StringEnumConverter))]
+        public CardType Type => (CardType)Entity.GetTag(CARDTYPE);
 
-		public Race Race => (Race)Entity.GetTag(CARDRACE);
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Race Race => (Race)Entity.GetTag(CARDRACE);
 
-		public CardSet Set
+        [JsonConverter(typeof(StringEnumConverter))]
+        public CardSet Set
 		{
 			get
 			{
@@ -77,7 +85,8 @@ namespace HearthDb
 			}
 		}
 
-		public Faction Faction => (Faction)Entity.GetTag(FACTION);
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Faction Faction => (Faction)Entity.GetTag(FACTION);
 
 		public int Cost => Entity.GetTag(COST);
 
@@ -105,7 +114,8 @@ namespace HearthDb
 
 		public string[] EntourageCardIds => Entity.EntourageCards.Select(x => x.CardId).ToArray();
 
-		public Locale DefaultLanguage { get; set; } = Locale.enUS;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Locale DefaultLanguage { get; set; } = Locale.enUS;
 
 		public bool Collectible => Convert.ToBoolean(Entity.GetTag(COLLECTIBLE));
 
