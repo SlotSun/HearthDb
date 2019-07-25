@@ -18,7 +18,7 @@ namespace HearthDb
 
 		public static readonly Dictionary<string, Card> Collectible = new Dictionary<string, Card>();
 
-		static Cards()
+        static Cards()
 		{
 			var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("HearthDb.CardDefs.xml");
 			if(stream == null)
@@ -30,6 +30,7 @@ namespace HearthDb
 				foreach(var entity in cardDefs.Entites)
 				{
 					var card = new Card(entity);
+                    card.DefaultLanguage = Locale.zhCN;
 					All.Add(entity.CardId, card);
 					if(card.Collectible && (card.Type != CardType.HERO || card.Set != CardSet.CORE && card.Set != CardSet.HERO_SKINS))
 						Collectible.Add(entity.CardId, card);
