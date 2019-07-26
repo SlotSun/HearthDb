@@ -58,7 +58,7 @@ namespace HearthDb.Tests
                 }
             }
 
-            List<string> stringList = new List<string>();
+            Dictionary<string, string> dic2 = new Dictionary<string, string>();
             var cardSets = list.GroupBy(x => x.Card.Set);
             foreach (var cardSet in cardSets)
             {
@@ -69,10 +69,10 @@ namespace HearthDb.Tests
                     stringBuilder.AppendLine($"{card}");
                 }
 
-                stringList.Add(stringBuilder.ToString());
+                dic2.Add(cardSet.Key.ToString(), stringBuilder.ToString());
             }
 
-            foreach (var cardSet in stringList)
+            foreach (var cardSet in dic2)
             {
                 Console.WriteLine(cardSet);
             }
