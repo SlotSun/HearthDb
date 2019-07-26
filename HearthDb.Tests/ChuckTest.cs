@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using HearthDb.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -44,7 +43,6 @@ namespace HearthDb.Tests
         {
             Dictionary<string, Card> dic = Cards.All;
             List<Chuck> list = new List<Chuck>();
-            StringBuilder builder = new StringBuilder();
             foreach (Card item in dic.Values)
             {
                 var enName = item.GetLocName(Locale.enUS);
@@ -60,13 +58,24 @@ namespace HearthDb.Tests
                 }
             }
 
-            var tempList = list.OrderBy(x => x.ConcatEnglishName);
-            foreach (var item in tempList)
+            List<string> stringList = new List<string>();
+            var cardSets = list.GroupBy(x => x.Card.Set);
+            foreach (var cardSet in cardSets)
             {
-                builder.AppendLine($"{item}");
-            }
-            Console.WriteLine(builder);
+                var tempCardSet = cardSet.OrderBy(x => x.ConcatEnglishName);
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var card in tempCardSet)
+                {
+                    stringBuilder.AppendLine($"{card}");
+                }
 
+                stringList.Add(stringBuilder.ToString());
+            }
+
+            foreach (var cardSet in stringList)
+            {
+                Console.WriteLine(cardSet);
+            }
         }
     }
 }
