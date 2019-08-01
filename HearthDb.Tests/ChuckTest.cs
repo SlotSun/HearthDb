@@ -28,9 +28,9 @@ namespace HearthDb.Tests
     /// {Card.Class}
     /// {Card.Type}
     /// Collectible = {Card.Collectible}
-    /// {Card.Text}
+    /// {Card.Text?.Replace("\n","\n/// ")}
     /// </summary>
-    {ConcatEnglishName},
+    {Card.Id},
 ";
         }
     }
