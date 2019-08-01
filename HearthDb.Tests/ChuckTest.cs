@@ -74,7 +74,8 @@ namespace HearthDb.Tests
 
             foreach (var cardSet in dic2)
             {
-                Console.WriteLine(cardSet);
+                Console.WriteLine($"///{cardSet.Key}");
+                Console.WriteLine(cardSet.Value);
             }
         }
     }
