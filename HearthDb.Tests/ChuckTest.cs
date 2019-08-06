@@ -9,6 +9,38 @@ using NUnit.Framework;
 
 namespace HearthDb.Tests
 {
+    public class TrimHelper
+    {
+        public static string TrimEnglishName(string temp)
+        {
+            if (temp == null)
+            {
+                return null;
+            }
+            temp = temp.Replace("&lt;", "");
+            temp = temp.Replace("b&gt;", "");
+            temp = temp.Replace("/b&gt;", "");
+            temp = temp.ToLower(new System.Globalization.CultureInfo("en-US", false));
+            temp = temp.Replace("'", "");
+            temp = temp.Replace(" ", "");
+            temp = temp.Replace(":", "");
+            temp = temp.Replace(".", "");
+            temp = temp.Replace("!", "");
+            temp = temp.Replace("?", "");
+            temp = temp.Replace("-", "");
+            temp = temp.Replace("_", "");
+            temp = temp.Replace(",", "");
+            temp = temp.Replace("(", "");
+            temp = temp.Replace(")", "");
+            temp = temp.Replace("/", "");
+            temp = temp.Replace("\"", "");
+            temp = temp.Replace("+", "");
+            temp = temp.Replace("’", "");
+            temp = temp.Replace("=", "");
+            return temp;
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -52,7 +84,7 @@ namespace HearthDb.Tests
     /// Collectible = {Card.Collectible}
     /// {Card.Text?.Replace("\n", "\n/// ")}
     /// </summary>
-    {Card.Id},
+    {TrimmedEnglishName},
 ";
         }
 
@@ -71,12 +103,11 @@ namespace HearthDb.Tests
                 var enName = item.GetLocName(Locale.enUS);
                 if (!string.IsNullOrEmpty(enName))
                 {
-                    var tempName = enName.Replace(" ", string.Empty).ToLower();
                     ChuckCardId cardId = new ChuckCardId();
                     cardId.Card = item;
                     cardId.ChineseName = item.GetLocName(Locale.zhCN);
-                    cardId.EnglishName = item.GetLocName(Locale.enUS);
-                    cardId.TrimmedEnglishName = tempName;
+                    cardId.EnglishName = enName;
+                    cardId.TrimmedEnglishName = TrimHelper.TrimEnglishName(enName);
                     list.Add(cardId);
                 }
             }
@@ -127,8 +158,11 @@ namespace HearthDb.Tests
             Console.WriteLine(list.Count);
         }
 
+        [Test]
         public void GenerateCardNameEnum()
         {
+            Dictionary<string,int> trimmedEnglishNameDictionary = new Dictionary<string, int>();
+
             Dictionary<string, Card> dic = Cards.All;
             List<ChuckCardName> list = new List<ChuckCardName>();
             foreach (Card item in dic.Values)
@@ -136,12 +170,36 @@ namespace HearthDb.Tests
                 var enName = item.GetLocName(Locale.enUS);
                 if (!string.IsNullOrEmpty(enName))
                 {
-                    var tempName = enName.Replace(" ", string.Empty).ToLower();
                     ChuckCardName cardName = new ChuckCardName();
                     cardName.Card = item;
                     cardName.ChineseName = item.GetLocName(Locale.zhCN);
-                    cardName.EnglishName = item.GetLocName(Locale.enUS);
-                    cardName.TrimmedEnglishName = tempName;
+                    cardName.EnglishName = enName;
+                    var trimmedEnglishName = TrimHelper.TrimEnglishName(enName);
+                    if (trimmedEnglishNameDictionary.ContainsKey(trimmedEnglishName))
+                    {
+                        int count = trimmedEnglishNameDictionary[trimmedEnglishName];
+                        count++;
+                        trimmedEnglishNameDictionary[trimmedEnglishName] = count;
+                        trimmedEnglishName = $"{trimmedEnglishName}_chuck_{count}";
+                    }
+                    else
+                    {
+                        trimmedEnglishNameDictionary.Add(trimmedEnglishName, 1);
+                    }
+
+                    if (item.Id.Equals("GILA_BOSS_66p"))
+                    {
+                        trimmedEnglishName = "silence_hero_power";
+                    }
+                    else if (item.Id.Equals("TB_LethalSetup001a"))
+                    {
+                        trimmedEnglishName = "continue1";
+                    }else if (item.Id.Equals("LOOT_333e"))
+                    {
+                        trimmedEnglishName = "AddLevel1";
+                    }
+
+                    cardName.TrimmedEnglishName = trimmedEnglishName;
                     list.Add(cardName);
                 }
             }
