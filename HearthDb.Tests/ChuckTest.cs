@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HearthDb.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace HearthDb.Tests
 {
@@ -35,10 +35,10 @@ namespace HearthDb.Tests
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class ChuckTest
     {
-        [TestMethod]
+        [Test]
         public void Test1()
         {
             Dictionary<string, Card> dic = Cards.All;
