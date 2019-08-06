@@ -10,7 +10,7 @@ namespace HearthDb.Tests
             Name = tag.Name;
             TypeString = tag.TypeString;
             Value = tag.Value;
-            InnerValue = tag.InnerValue;
+            InnerValue = tag.LocStringEnUs;
         }
 
         [XmlAttribute("enumID")]
