@@ -41,7 +41,7 @@ namespace HearthDb.Tests
     public class ChuckTest
     {
         [Test]
-        public void Test1()
+        public void GenerateCardIdEnum()
         {
             Dictionary<string, Card> dic = Cards.All;
             List<Chuck> list = new List<Chuck>();
@@ -82,7 +82,7 @@ namespace HearthDb.Tests
         }
 
         [Test]
-        public void ExportHearthBuddy()
+        public void GenerateCardDb()
         {
             var cards = Cards.All;
             List<Entity> list = new List<Entity>();
@@ -99,7 +99,7 @@ namespace HearthDb.Tests
 
             XmlSerializer ser = new XmlSerializer(typeof(CardDefs));
 
-            using (FileStream fs = new FileStream(@"c:\Chuck.xml", FileMode.Create))
+            using (FileStream fs = new FileStream(@"c:\_carddb.txt", FileMode.Create))
             {
                 ser.Serialize(fs, cardDefs);
             }
