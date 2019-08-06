@@ -12,12 +12,12 @@ namespace HearthDb.Tests
     /// <summary>
     /// 
     /// </summary>
-    public class Chuck
+    public class ChuckCardId
     {
         public Card Card { get; set; }
         public string EnglishName { get; set; }
         public string ChineseName { get; set; }
-        public string ConcatEnglishName { get; set; }
+        public string TrimmedEnglishName { get; set; }
 
         public override string ToString()
         {
@@ -37,6 +37,27 @@ namespace HearthDb.Tests
         }
     }
 
+    public class ChuckCardName : ChuckCardId
+    {
+        public override string ToString()
+        {
+            return $@"
+    /// <summary>
+    /// {Card.Id}
+    /// {EnglishName}
+    /// {ChineseName}
+    /// {Card.Set}
+    /// {Card.Class}
+    /// {Card.Type}
+    /// Collectible = {Card.Collectible}
+    /// {Card.Text?.Replace("\n", "\n/// ")}
+    /// </summary>
+    {Card.Id},
+";
+        }
+
+    }
+
     [TestFixture]
     public class ChuckTest
     {
@@ -44,19 +65,19 @@ namespace HearthDb.Tests
         public void GenerateCardIdEnum()
         {
             Dictionary<string, Card> dic = Cards.All;
-            List<Chuck> list = new List<Chuck>();
+            List<ChuckCardId> list = new List<ChuckCardId>();
             foreach (Card item in dic.Values)
             {
                 var enName = item.GetLocName(Locale.enUS);
                 if (!string.IsNullOrEmpty(enName))
                 {
                     var tempName = enName.Replace(" ", string.Empty).ToLower();
-                    Chuck chuck = new Chuck();
-                    chuck.Card = item;
-                    chuck.ChineseName = item.GetLocName(Locale.zhCN);
-                    chuck.EnglishName = item.GetLocName(Locale.enUS);
-                    chuck.ConcatEnglishName = tempName;
-                    list.Add(chuck);
+                    ChuckCardId cardId = new ChuckCardId();
+                    cardId.Card = item;
+                    cardId.ChineseName = item.GetLocName(Locale.zhCN);
+                    cardId.EnglishName = item.GetLocName(Locale.enUS);
+                    cardId.TrimmedEnglishName = tempName;
+                    list.Add(cardId);
                 }
             }
 
@@ -64,7 +85,7 @@ namespace HearthDb.Tests
             var cardSets = list.GroupBy(x => x.Card.Set);
             foreach (var cardSet in cardSets)
             {
-                var tempCardSet = cardSet.OrderBy(x => x.ConcatEnglishName);
+                var tempCardSet = cardSet.OrderBy(x => x.TrimmedEnglishName);
                 StringBuilder stringBuilder = new StringBuilder();
                 foreach (var card in tempCardSet)
                 {
@@ -104,6 +125,46 @@ namespace HearthDb.Tests
                 ser.Serialize(fs, cardDefs);
             }
             Console.WriteLine(list.Count);
+        }
+
+        public void GenerateCardNameEnum()
+        {
+            Dictionary<string, Card> dic = Cards.All;
+            List<ChuckCardName> list = new List<ChuckCardName>();
+            foreach (Card item in dic.Values)
+            {
+                var enName = item.GetLocName(Locale.enUS);
+                if (!string.IsNullOrEmpty(enName))
+                {
+                    var tempName = enName.Replace(" ", string.Empty).ToLower();
+                    ChuckCardName cardName = new ChuckCardName();
+                    cardName.Card = item;
+                    cardName.ChineseName = item.GetLocName(Locale.zhCN);
+                    cardName.EnglishName = item.GetLocName(Locale.enUS);
+                    cardName.TrimmedEnglishName = tempName;
+                    list.Add(cardName);
+                }
+            }
+
+            Dictionary<string, string> dic2 = new Dictionary<string, string>();
+            var cardSets = list.GroupBy(x => x.Card.Set);
+            foreach (var cardSet in cardSets)
+            {
+                var tempCardSet = cardSet.OrderBy(x => x.TrimmedEnglishName);
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var card in tempCardSet)
+                {
+                    stringBuilder.AppendLine($"{card}");
+                }
+
+                dic2.Add(cardSet.Key.ToString(), stringBuilder.ToString());
+            }
+
+            foreach (var cardSet in dic2)
+            {
+                Console.WriteLine($"///{cardSet.Key}");
+                Console.WriteLine(cardSet.Value);
+            }
         }
     }
 }
