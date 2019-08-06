@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using HearthDb.Enums;
 using NUnit.Framework;
 
@@ -77,6 +79,30 @@ namespace HearthDb.Tests
                 Console.WriteLine($"///{cardSet.Key}");
                 Console.WriteLine(cardSet.Value);
             }
+        }
+
+        [Test]
+        public void ExportHearthBuddy()
+        {
+            var cards = Cards.All;
+            List<Entity> list = new List<Entity>();
+            foreach (var card in cards.Values)
+            {
+                var originEntity = card.Entity;
+                Entity entity = new Entity(originEntity);
+                list.Add(entity);
+            }
+
+            CardDefs cardDefs=new CardDefs();
+            cardDefs.Entites = list;
+
+            XmlSerializer ser = new XmlSerializer(typeof(CardDefs));
+
+            using (FileStream fs = new FileStream(@"c:\Chuck.xml", FileMode.Create))
+            {
+                ser.Serialize(fs, cardDefs);
+            }
+            Console.WriteLine(list.Count);
         }
     }
 }
