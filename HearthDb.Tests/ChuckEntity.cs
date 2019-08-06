@@ -15,19 +15,23 @@ namespace HearthDb.Tests
 
     public class Entity
     {
-        public Entity(HearthDb.CardDefs.Entity entity)
+        public void SetValue(HearthDb.CardDefs.Entity entity)
         {
             CardId = entity.CardId;
             DbfId = entity.DbfId;
             Version = entity.Version;
             foreach (var tag in entity.Tags)
             {
-                Tags.Add(new Tag(tag));
+                Tag temp = new Tag();
+                temp.SetValue(tag);
+                Tags.Add(temp);
             }
 
             foreach (var tag in entity.ReferencedTags)
             {
-                ReferencedTags.Add(new Tag(tag));
+                Tag temp = new Tag();
+                temp.SetValue(tag);
+                ReferencedTags.Add(temp);
             }
 
             Power = entity.Power;

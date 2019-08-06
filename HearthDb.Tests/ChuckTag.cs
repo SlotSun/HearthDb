@@ -4,7 +4,7 @@ namespace HearthDb.Tests
 {
     public class Tag
     {
-        public Tag(HearthDb.CardDefs.Tag tag)
+        public void SetValue(HearthDb.CardDefs.Tag tag)
         {
             EnumId = tag.EnumId;
             Name = tag.Name;

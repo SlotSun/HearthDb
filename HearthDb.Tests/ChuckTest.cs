@@ -89,7 +89,8 @@ namespace HearthDb.Tests
             foreach (var card in cards.Values)
             {
                 var originEntity = card.Entity;
-                Entity entity = new Entity(originEntity);
+                Entity entity = new Entity();
+                entity.SetValue(originEntity);
                 list.Add(entity);
             }
 
