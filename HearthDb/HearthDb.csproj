@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HearthDb</RootNamespace>
-    <AssemblyName>HearthDb</AssemblyName>
+    <AssemblyName>Chuck-HearthDb</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -85,14 +85,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>if exist $(ProjectDir)hsdata (
-  git -C "$(ProjectDir)hsdata" fetch
-  git -C "$(ProjectDir)hsdata" reset --hard origin/master
-) else (
-  git clone --depth=1 https://github.com/HearthSim/hsdata.git "$(ProjectDir)hsdata"
-)
+    <PreBuildEvent>
 if "$(ConfigurationName)" == "Release" (
-  powershell -ExecutionPolicy Unrestricted -file "$(ProjectDir)verify.ps1" "$(ProjectDir)\"
+ REM powershell -ExecutionPolicy Unrestricted -file "$(ProjectDir)verify.ps1" "$(ProjectDir)\"
 )
 xcopy /Y "$(ProjectDir)hsdata\CardDefs.xml" "$(ProjectDir)CardDefs.xml*"</PreBuildEvent>
   </PropertyGroup>

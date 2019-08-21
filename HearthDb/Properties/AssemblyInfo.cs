@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HearthDb")]
+[assembly: AssemblyTitle("Chuck-HearthDb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HearthSim")]
-[assembly: AssemblyProduct("HearthDb")]
+[assembly: AssemblyProduct("Chuck-HearthDb")]
 [assembly: AssemblyCopyright("Copyright © HearthSim 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
