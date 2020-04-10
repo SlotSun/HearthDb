@@ -27,22 +27,6 @@ namespace HearthDb.Tests
 		}
 
 		[TestMethod]
-		public void EntourageCardTest()
-		{
-			var animalCompanion = Cards.Collectible[CardIds.Collectible.Hunter.AnimalCompanion];
-			Assert.AreEqual(3, animalCompanion.EntourageCardIds.Length);
-			Assert.AreEqual(CardIds.NonCollectible.Hunter.Misha, animalCompanion.EntourageCardIds[0]);
-			Assert.AreEqual(CardIds.NonCollectible.Hunter.Leokk, animalCompanion.EntourageCardIds[1]);
-		}
-
-		[TestMethod]
-		public void EntourageCardTest_AnimalCompanion()
-		{
-			var animalCompanion = Cards.Collectible[CardIds.Collectible.Hunter.AnimalCompanion];
-			Assert.AreEqual(3, animalCompanion.EntourageCardIds.Length);
-		}
-
-		[TestMethod]
 		public void IgnoreCaseTest()
 		{
 			var c1 = Cards.GetFromName("Flame Lance", Locale.enUS);
@@ -86,6 +70,10 @@ namespace HearthDb.Tests
 			var janalai = Cards.GetFromDbfId(50088);
 			Assert.IsFalse(janalai.Text.Contains("@"));
 			Assert.IsTrue(janalai.Text.Contains("If your Hero Power"));
+
+			var galakrond = Cards.GetFromDbfId(57419);
+			Assert.IsTrue(galakrond.Text.Contains("Draw 1 card."));
+			Assert.IsTrue(galakrond.Text.Contains("It costs (0)."));
 		}
 	}
 }
